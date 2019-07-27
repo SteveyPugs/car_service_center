@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 var SignIn = (props) => {
     return(
@@ -20,7 +21,11 @@ var SignIn = (props) => {
                                     <label>Password</label>
                                     <input type="password" className="form-control" id="UserPassword" />
                                 </div>
-                                <button type="submit" className="btn btn-primary btn-block">Sign In</button>
+                                <button type="submit" className="btn btn-primary btn-sm btn-block">Sign In</button>
+                                <hr />
+                                <Link to="/forgot" className="btn btn-info btn-sm btn-block">
+                                    Forgot Password
+                                </Link>
                             </form>
                         </div>
                     </div>
