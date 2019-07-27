@@ -1,33 +1,15 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import './App.css';
+import SignIn from './User/SignIn';
 
 class App extends Component {
-    state = {
-        data: null
-    };
-
-    componentDidMount() {
-        this.callBackendAPI().then(res => this.setState({
-            data: res.express
-        })).catch(err => console.log(err));
-    }
-    callBackendAPI = async () => {
-        const response = await fetch('/express_backend');
-        const body = await response.json();
-
-        if (response.status !== 200) {
-            throw Error(body.message) 
-        }
-        return body;
-    };
-
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">{this.state.data}</p>
+            <div className="container">
+                <Router>
+                    <Route path="/" exact component={SignIn} />
+                </Router>                
             </div>
         );
     }
