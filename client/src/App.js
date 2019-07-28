@@ -4,6 +4,7 @@ import './App.css';
 import SignIn from './User/SignIn';
 import Forgot from './User/Forgot/Forgot';
 import ForgotConfirmation from './User/Forgot/ForgotConfirmation';
+import AppointmentSearch from './Appointment/Search';
 import NoMatch from './NoMatch/NoMatch';
 
 class App extends Component {
@@ -15,6 +16,7 @@ class App extends Component {
                         <Route path="/" exact component={SignIn} />
                         <Route path="/forgot" exact component={Forgot} />
                         <Route path="/forgot-step-2" exact component={ForgotConfirmation} />
+                        <Route path="/appointments" exact component={AppointmentSearch} />
                         <Route component={NoMatch} />
                     </Switch>
                 </BrowserRouter>
