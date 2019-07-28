@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../NavBar/Navbar';
 import SearchBox from '../Appointment/SearchBox';
 import SearchResuls from '../Appointment/SearchResult';
+import Single from '../Appointment/Single';
 
 var Search = (props) => {
     return(
@@ -15,7 +16,9 @@ var Search = (props) => {
                     <br />
                     <SearchResuls></SearchResuls>
                 </div>
-                <div className="col-6">Selected item will go here</div>
+                <div className="col-6">
+                    <Single></Single>
+                </div>
             </div>
         </div>
     );
