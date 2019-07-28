@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 var Single = (props) => {
     return(
-        <div class="alert alert-secondary" role="alert">
+        <div className="alert alert-secondary" role="alert">
             <h4>Appointment Details</h4>
             <hr />
             <div className="row">
@@ -51,10 +52,10 @@ var Single = (props) => {
             <br />
             <div className="row">
                 <div className="col">
-                    <button type="button" class="btn btn-dark btn-sm">Edit</button>
+                    <Link to="/appointment/edit" className="btn btn-dark btn-sm">Edit</Link>
                 </div>
                 <div className="col text-right">
-                    <button type="button" class="btn btn-dark btn-sm">Remove</button>
+                    <button type="button" className="btn btn-dark btn-sm">Remove</button>
                 </div>
             </div>
         </div>
