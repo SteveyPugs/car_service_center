@@ -9,6 +9,11 @@ var Navbar = (props) => {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse align-items-center" id="appointmentNavbar">
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item">
+                        <Link to="/appointment/new" className="nav-link">Add New</Link>
+                    </li>
+                </ul>
                 <ul className="navbar-nav ml-auto align-items-center">
                     <li className="nav-item">
                         <Link to="/" className="nav-link">Sign Out</Link>

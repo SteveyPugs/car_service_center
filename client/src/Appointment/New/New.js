@@ -1,14 +1,14 @@
 import React from 'react';
 import Navbar from '../../NavBar/Navbar';
 
-var Edit = (props) => {
+var New = (props) => {
     return(
         <div>
             <br/>
             <Navbar></Navbar>
             <br />
             <div className="container">
-                <h3>Edit</h3>
+                <h3>New</h3>
                 <hr />
                 <form>
                     <div className="form-row">
@@ -66,4 +66,4 @@ var Edit = (props) => {
     );
 }
 
-export default Edit;
+export default New;
