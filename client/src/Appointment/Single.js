@@ -55,10 +55,27 @@ var Single = (props) => {
                     <Link to="/appointment/edit" className="btn btn-dark btn-sm">Edit</Link>
                 </div>
                 <div className="col text-right">
-                    <button type="button" className="btn btn-dark btn-sm">Remove</button>
+                    <button type="button" className="btn btn-dark btn-sm" data-toggle="modal" data-target="#deleteAppointmentModal">Remove</button>
                 </div>
             </div>
-        </div>
+            <div className="modal fade" id="deleteAppointmentModal" role="dialog">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="deleteAppointmentModalLabel">Are you you want to delete this appointment?</h5>
+                        </div>
+                        <div className="modal-footer">
+                            <div className="col-6">
+                                <button type="button" className="btn btn-block btn-success">Yes</button>
+                            </div>
+                            <div className="col-6">
+                                <button type="button" className="btn btn-block btn-danger" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
     );
 }
 
