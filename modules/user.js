@@ -41,12 +41,21 @@ module.exports = {
 			});
 		} else reject(new Error('createUser requires email'));
 	}),
-	// Verify (GET) #10
+	/*
+		verifyUser: finds user via email, compares password input with found user for validity
+		------------
+		requirements:
+		- email
+		- password
+		outputs:
+		- validity status
+	*/
 	verifyUser: (email, password) => new Promise((resolve, reject) => {
 		if (email && password) {
 			models.User.findOne({
 				where: {
-					UserEmail: email
+					UserEmail: email,
+					UserDeleted: false
 				},
 				raw: true
 			}).then((user) => {
