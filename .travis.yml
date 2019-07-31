@@ -4,5 +4,7 @@ node_js:
   - "10"
   - "8"
 
+before_script:
+  - cp server-config/index.example.js server-config/index.js
 script:
   - npm run lint
