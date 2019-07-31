@@ -20,8 +20,8 @@ module.exports = {
 						UserPassword: hash,
 						UserFullName: fullName,
 						UserSalt: salt
-					}).then(() => {
-						resolve(randomStr);
+					}).then((createdUser) => {
+						resolve([randomStr, createdUser.dataValues.UserID]);
 					});
 				});
 			});
@@ -51,8 +51,19 @@ module.exports = {
 	}),
 	// Update (PUT) #12
 	// unit test needed
-	updateUser: data => new Promise((resolve, reject) => {
-		if (data) resolve(data);
-		else reject(new Error('updateUser requires data'));
+	updateUser: (id, fullName) => new Promise((resolve, reject) => {
+		if (id && fullName) {
+			models.User.update({
+				UserFullName: fullName
+			}, {
+				where: {
+					UserID: id
+				}
+			}).then(() => {
+				resolve(true);
+			}).catch((err) => {
+				reject(err);
+			});
+		} else reject(new Error('updateUser requires id and fullName'));
 	})
 };
