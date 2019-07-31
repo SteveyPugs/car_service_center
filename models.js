@@ -11,9 +11,7 @@ const sequelize = new Sequelize(db.dbName, db.dbUsername, db.dbPassword, {
 	logging: false
 });
 
-sequelize.authenticate().then(() => {
-	console.log('Connection has been established successfully.');
-}).catch((err) => {
+sequelize.authenticate().then().catch((err) => {
 	console.error('Unable to connect to the database:', err);
 });
 
@@ -150,33 +148,35 @@ module.exports = {
 		sequelize.sync({
 			force: false
 		}).then(() => {
-			User.findOne({
-				where: {
-					UserEmail: 'stephen.pugliese@outlook.com',
-					UserDeleted: false
-				}
-			}).then((user) => {
-				if (!user) {
-					const randomStr = chance.word({
-						length: 8
-					});
-					bcrypt.genSalt(10, (err, salt) => {
-						if (err) console.error(err);
-						else console.log(`Password for stephen.pugliese@outlook.com is :${randomStr}`);
-						bcrypt.hash(randomStr, salt, (_err, hash) => {
-							User.create({
-								UserEmail: 'stephen.pugliese@outlook.com',
-								UserPassword: hash,
-								UserFullName: 'Stephen Pugliese',
-								UserSalt: salt
-							});
-							console.log('tables synced + first user created');
+			if (db.dbUsername !== 'travis') {
+				User.findOne({
+					where: {
+						UserEmail: 'stephen.pugliese@outlook.com',
+						UserDeleted: false
+					}
+				}).then((user) => {
+					if (!user) {
+						const randomStr = chance.word({
+							length: 8
 						});
-					});
-				} else {
-					console.log('tables synced');
-				}
-			});
+						bcrypt.genSalt(10, (err, salt) => {
+							if (err) console.error(err);
+							else console.log(`Password for stephen.pugliese@outlook.com is :${randomStr}`);
+							bcrypt.hash(randomStr, salt, (_err, hash) => {
+								User.create({
+									UserEmail: 'stephen.pugliese@outlook.com',
+									UserPassword: hash,
+									UserFullName: 'Stephen Pugliese',
+									UserSalt: salt
+								});
+								console.log('tables synced + first user created');
+							});
+						});
+					} else {
+						console.log('tables synced');
+					}
+				});
+			}
 		});
 	}
 };
