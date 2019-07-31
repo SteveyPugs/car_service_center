@@ -4,6 +4,7 @@
   "description": "Test project for care service center",
   "main": "server.js",
   "scripts": {
+    "lint": " ./node_modules/.bin/eslint '**/*.js'",
     "test": "mocha"
   },
   "repository": {
