@@ -15,14 +15,14 @@ app.listen(port, () => {
 	models.createDB();
 });
 
-// create a GET route
-app.get('/express_backend', (req, res) => {
-	res.send({
-		express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT'
-	});
-});
-
-// api to create new system users
+/*
+api to create new users
+required:
+- UserEmail
+- UserFullName
+returns:
+- true
+*/
 app.post('/user', [
 	check('UserEmail').isEmail(),
 	check('UserFullName').isLength({ min: 1 })
@@ -35,10 +35,12 @@ app.post('/user', [
 });
 
 /*
-api to users
+api to updated users
 required:
 - UserID
 - UserFullName
+returns:
+- update status
 */
 app.put('/user/:UserID', [
 	check('UserFullName').isLength({ min: 1 })
@@ -48,4 +50,23 @@ app.put('/user/:UserID', [
 		return res.status(422).json({ errors: errors.array() });
 	}
 	return modules.updateUser(req.params.UserID, req.body.UserFullName).then(updatedStatus => res.status(200).send(updatedStatus)).catch(err => res.status(500).send(err));
+});
+
+/*
+api to verify user login
+required:
+- UserEmail
+- UserPassword
+returns:
+- valid status
+*/
+app.post('/user/login', [
+	check('UserEmail').isEmail(),
+	check('UserPassword').isLength({ min: 1 })
+], (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.verifyUser(req.body.UserEmail, req.body.UserPassword).then(valid => res.status(200).send(valid)).catch(err => res.status(500).send(err));
 });
