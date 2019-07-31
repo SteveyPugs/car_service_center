@@ -42,6 +42,12 @@ describe('Car Service Testing Suite', () => {
 					}).catch(err => done(err));
 				}).catch(err => done(err));
 			});
+			it('should not user test5@test.com as the id does not exist', (done) => {
+				modules.updateUser(5000, 'Test User 5').then((updated) => {
+					assert.equal(updated, false);
+					return done();
+				}).catch(err => done(err));
+			});
 		});
 	});
 });

@@ -33,3 +33,19 @@ app.post('/user', [
 	}
 	return modules.createUser(req.body.UserEmail, req.body.UserFullName).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
 });
+
+/*
+api to users
+required:
+- UserID
+- UserFullName
+*/
+app.put('/user/:UserID', [
+	check('UserFullName').isLength({ min: 1 })
+], (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.updateUser(req.params.UserID, req.body.UserFullName).then(updatedStatus => res.status(200).send(updatedStatus)).catch(err => res.status(500).send(err));
+});

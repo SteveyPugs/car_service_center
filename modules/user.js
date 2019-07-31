@@ -63,17 +63,41 @@ module.exports = {
 			});
 		} else reject(new Error('verifyUser requires email and password'));
 	}),
-	// Update (PUT) #12
+	/*
+		updateUser: updates a current user's fullname with valid id 
+		------------
+		requirements:
+		- id
+		- fullName
+		outputs:
+		- updated status (yes = true, no = false)
+	*/
 	updateUser: (id, fullName) => new Promise((resolve, reject) => {
 		if (id && fullName) {
-			models.User.update({
-				UserFullName: fullName
-			}, {
+			// find if user exists
+			models.User.findOne({
 				where: {
 					UserID: id
+				},
+				raw: true
+			}).then((user) => {
+				if (user) {
+					// if user exists update UserFullName using id and return true
+					models.User.update({
+						UserFullName: fullName
+					}, {
+						where: {
+							UserID: id
+						}
+					}).then(() => {
+						resolve(true);
+					}).catch((err) => {
+						reject(err);
+					});
+				} else {
+					// if user does not exist and return false
+					resolve(false);
 				}
-			}).then(() => {
-				resolve(true);
 			}).catch((err) => {
 				reject(err);
 			});
