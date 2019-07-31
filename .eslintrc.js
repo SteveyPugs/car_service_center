@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     indent: ["error", "tab"],
     "no-tabs": 0,
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "no-console": "off"
   }
 };
