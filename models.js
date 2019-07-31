@@ -7,7 +7,8 @@ const chance = new Chance();
 
 const sequelize = new Sequelize(db.dbName, db.dbUsername, db.dbPassword, {
 	host: db.dbHost,
-	dialect: 'mysql'
+	dialect: 'mysql',
+	logging: false
 });
 
 sequelize.authenticate().then(() => {
