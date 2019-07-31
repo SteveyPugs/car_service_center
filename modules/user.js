@@ -5,15 +5,28 @@ const models = require('../models');
 const chance = new Chance();
 
 module.exports = {
-	// Create (POST) #11
+	/*
+		createUser: creates a new user for the system with random password that is salted and hashed
+		------------
+		requirements:
+		- email
+		- fullName
+		outputs:
+		- random password
+		- userid created
+	*/
 	createUser: (email, fullName) => new Promise((resolve, reject) => {
 		if (email && fullName) {
+			// generate random password
 			const randomStr = chance.word({
 				length: 8
 			});
+			// generate salt
 			bcrypt.genSalt(10, (err, salt) => {
 				if (err) reject(err);
+				// generate hash on random password + salt
 				bcrypt.hash(randomStr, salt, (err2, hash) => {
+					// add user to the db
 					if (err2) reject(err2);
 					models.User.create({
 						UserEmail: email,
@@ -21,6 +34,7 @@ module.exports = {
 						UserFullName: fullName,
 						UserSalt: salt
 					}).then((createdUser) => {
+						// return random password + user id created
 						resolve([randomStr, createdUser.dataValues.UserID]);
 					});
 				});
@@ -50,7 +64,6 @@ module.exports = {
 		} else reject(new Error('verifyUser requires email and password'));
 	}),
 	// Update (PUT) #12
-	// unit test needed
 	updateUser: (id, fullName) => new Promise((resolve, reject) => {
 		if (id && fullName) {
 			models.User.update({
