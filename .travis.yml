@@ -12,3 +12,4 @@ before_script:
   - mysql -e 'CREATE DATABASE car_service_db;'
 script:
   - npm run lint
+  - npm test
