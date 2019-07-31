@@ -64,7 +64,7 @@ module.exports = {
 		} else reject(new Error('verifyUser requires email and password'));
 	}),
 	/*
-		updateUser: updates a current user's fullname with valid id 
+		updateUser: updates a current user's fullname with valid id
 		------------
 		requirements:
 		- id
