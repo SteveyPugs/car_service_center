@@ -1,6 +1,7 @@
+// chande for local
 module.exports = {
-	dbName: 'dbName',
-	dbUsername: 'dbUsername',
-	dbPassword: 'dbPassword',
-	dbHost: 'dbHost'
+	dbName: 'car_service_db',
+	dbUsername: 'travis',
+	dbPassword: null,
+	dbHost: '127.0.0.1'
 };

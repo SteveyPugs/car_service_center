@@ -4,7 +4,11 @@ node_js:
   - "10"
   - "8"
 
+services:
+  - mysql
+
 before_script:
   - cp server-config/index.example.js server-config/index.js
+  - mysql -e 'CREATE DATABASE car_service_db;'
 script:
   - npm run lint
