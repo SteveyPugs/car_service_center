@@ -72,6 +72,21 @@ app.post('/user/login', [
 });
 
 /*
+api to get appointment
+required:
+- AppointmentID
+returns:
+- Appointment Object
+*/
+app.get('/appointment/:AppointmentID', (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Appointment.getAppointment(req.params.AppointmentID).then(appointment => res.status(200).send(appointment)).catch(err => res.status(500).send(err));
+});
+
+/*
 api to create new appointments
 required:
 - AppointmentFullName

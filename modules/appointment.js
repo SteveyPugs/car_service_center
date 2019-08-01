@@ -94,10 +94,22 @@ module.exports = {
 		getAppointment: gets single appointment
 		------------
 		requirements:
+		- id
 		outputs:
+		- data object
 	*/
-	getAppointment: data => new Promise((resolve, reject) => {
-		if (data) resolve(data);
-		else reject(new Error('getAppointment requires data'));
+	getAppointment: id => new Promise((resolve, reject) => {
+		if (id) {
+			// if id then get appointment based on id
+			models.Appointment.findOne({
+				where: {
+					AppointmentID: id
+				}
+			}).then((appointment) => {
+				resolve(appointment);
+			}).catch((err) => {
+				reject(err);
+			});
+		} else reject(new Error('getAppointment requires id'));
 	})
 };
