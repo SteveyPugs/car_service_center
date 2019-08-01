@@ -50,4 +50,16 @@ describe('Car Service Testing Suite', () => {
 			});
 		});
 	});
+	describe('Appointments', () => {
+		describe('#createApointment()', () => {
+		});
+		describe('#editApointment()', () => {
+		});
+		describe('#deleteApointment()', () => {
+		});
+		describe('#getAppointments()', () => {
+		});
+		describe('#getAppointment()', () => {
+		});
+	});
 });
