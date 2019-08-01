@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const assert = require('assert');
 const models = require('../models');
 const modules = require('../modules');
@@ -82,14 +83,31 @@ describe('Car Service Testing Suite', () => {
 				}).then((createdApointment) => {
 					modules.Appointment.editAppointment(createdApointment.dataValues.AppointmentID, {
 						AppointmentCompleted: true
-					}).then((edtiStatus) => {
-						assert.equal(edtiStatus, true);
+					}).then((editStatus) => {
+						assert.equal(editStatus, true);
 						return done();
 					}).catch(err => done(err));
 				}).catch(err => done(err));
 			});
 		});
 		describe('#deleteApointment()', () => {
+			it('should create a new appointment and delete it', (done) => {
+				modules.Appointment.createAppointment({
+					AppointmentFullName: 'Stephen Pugliese',
+					AppointmentDate: new Date(),
+					AppointmentCompleted: false,
+					ReasonID: 1,
+					AppointmentCarMake: 'Chevrolet',
+					AppointmentCarModel: 'Traverse',
+					AppointmentCarYear: 2018,
+					AppointmentNotes: 'Car is a lease'
+				}).then((createdApointment) => {
+					modules.Appointment.deleteApointment(createdApointment.dataValues.AppointmentID).then((deleteStatus) => {
+						assert.equal(deleteStatus, true);
+						return done();
+					}).catch(err => done(err));
+				}).catch(err => done(err));
+			});
 		});
 		describe('#getAppointments()', () => {
 		});

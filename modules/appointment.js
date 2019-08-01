@@ -60,11 +60,25 @@ module.exports = {
 		deleteAppointment: deletes single appointment
 		------------
 		requirements:
+		- id
 		outputs:
+		- true
 	*/
-	deleteAppointment: data => new Promise((resolve, reject) => {
-		if (data) resolve(data);
-		else reject(new Error('deleteAppointment requires data'));
+	deleteAppointment: id => new Promise((resolve, reject) => {
+		if (id) {
+			// if id then delete appointment based on id
+			models.Appointment.update({
+				AppointmentDeleted: true
+			}, {
+				where: {
+					AppointmentID: id
+				}
+			}).then(() => {
+				resolve(true);
+			}).catch((err) => {
+				reject(err);
+			});
+		} else reject(new Error('deleteAppointment requires id'));
 	}),
 	/*
 		getAppointments: gets appointments based on fliter or no filter
