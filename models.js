@@ -176,7 +176,7 @@ module.exports = {
 				{ ReasonText: 'Tightening or replacing a fuel cap', ReasonPrice: 15 },
 				{ ReasonText: 'Thermostat replacement', ReasonPrice: 210 },
 				{ ReasonText: 'Replacing ignition coil(s)', ReasonPrice: 236 },
-				{ ReasonText: 'Mass air flow sensor replacement', ReasonPrice: 382 }].then(() => {
+				{ ReasonText: 'Mass air flow sensor replacement', ReasonPrice: 382 }]).then(() => {
 				if (db.dbUsername !== 'travis') {
 					User.findOne({
 						where: {
@@ -207,7 +207,7 @@ module.exports = {
 						}
 					});
 				}
-			}));
+			});
 		});
 	}
 };
