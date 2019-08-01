@@ -83,12 +83,15 @@ module.exports = {
 	/*
 		getAppointments: gets appointments based on fliter or no filter
 		------------
-		requirements:
-		outputs:
+		requirements: query (can be null)
+		outputs: array of appointments
 	*/
-	getAppointments: data => new Promise((resolve, reject) => {
-		if (data) resolve(data);
-		else reject(new Error('getAppointments requires data'));
+	getAppointments: query => new Promise((resolve, reject) => {
+		models.Appointment.findAll(query).then((appointment) => {
+			resolve(appointment);
+		}).catch((err) => {
+			reject(err);
+		});
 	}),
 	/*
 		getAppointment: gets single appointment

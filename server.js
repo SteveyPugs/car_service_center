@@ -72,7 +72,7 @@ app.post('/user/login', [
 });
 
 /*
-api to get appointment
+api to get single appointment
 required:
 - AppointmentID
 returns:
@@ -145,4 +145,19 @@ app.delete('/appointment/:AppointmentID', (req, res) => {
 		return res.status(422).json({ errors: errors.array() });
 	}
 	return modules.Appointment.deleteAppointment(req.params.AppointmentID).then(deleteStatus => res.status(200).send(deleteStatus)).catch(err => res.status(500).send(err));
+});
+
+/*
+api to get appointments
+required: none
+returns: Appointments array
+*/
+app.get('/appointments', (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Appointment.getAppointments({
+		where: req.query
+	}).then(appointments => res.status(200).send(appointments)).catch(err => res.status(500).send(err));
 });

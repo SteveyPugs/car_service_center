@@ -90,7 +90,7 @@ describe('Car Service Testing Suite', () => {
 				}).catch(err => done(err));
 			});
 		});
-		describe('#deleteApointment()', () => {
+		describe('#deleteAppointment()', () => {
 			it('should create a new appointment and delete it', (done) => {
 				modules.Appointment.createAppointment({
 					AppointmentFullName: 'Stephen Pugliese',
@@ -102,7 +102,7 @@ describe('Car Service Testing Suite', () => {
 					AppointmentCarYear: 2018,
 					AppointmentNotes: 'Car is a lease'
 				}).then((createdApointment) => {
-					modules.Appointment.deleteApointment(createdApointment.dataValues.AppointmentID).then((deleteStatus) => {
+					modules.Appointment.deleteAppointment(createdApointment.dataValues.AppointmentID).then((deleteStatus) => {
 						assert.equal(deleteStatus, true);
 						return done();
 					}).catch(err => done(err));
@@ -110,6 +110,22 @@ describe('Car Service Testing Suite', () => {
 			});
 		});
 		describe('#getAppointments()', () => {
+			it('should get all appointments', (done) => {
+				modules.Appointment.getAppointments().then((appointments) => {
+					assert.equal(appointments.length > 0, true);
+					return done();
+				}).catch(err => done(err));
+			});
+			it('should get all appointments that are completed', (done) => {
+				modules.Appointment.getAppointments({
+					where: {
+						AppointmentCompleted: true
+					}
+				}).then((appointments) => {
+					assert.equal(appointments.length > 0, true);
+					return done();
+				}).catch(err => done(err));
+			});
 		});
 		describe('#getAppointment()', () => {
 			it('should create a new appointment and get it', (done) => {
