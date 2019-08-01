@@ -83,15 +83,30 @@ module.exports = {
 	*/
 	updateUser: (id, fullName) => new Promise((resolve, reject) => {
 		if (id && fullName) {
-			// if user exists update UserFullName using id and return true
-			models.User.update({
-				UserFullName: fullName
-			}, {
+			// find if user exists
+			models.User.findOne({
 				where: {
 					UserID: id
+				},
+				raw: true
+			}).then((user) => {
+				if (user) {
+					// if user exists update UserFullName using id and return true
+					models.User.update({
+						UserFullName: fullName
+					}, {
+						where: {
+							UserID: id
+						}
+					}).then(() => {
+						resolve(true);
+					}).catch((err) => {
+						reject(err);
+					});
+				} else {
+					// if user does not exist and return false
+					resolve(false);
 				}
-			}).then(() => {
-				resolve(true);
 			}).catch((err) => {
 				reject(err);
 			});
