@@ -9,7 +9,7 @@ const isMissingProps = (data) => {
 
 module.exports = {
 	/*
-		createApointment: creates new appointments
+		createAppointment: creates new appointments
 		------------
 		requirements:
 		- AppointmentFullName
@@ -23,33 +23,48 @@ module.exports = {
 		outputs:
 		- appointment created
 	*/
-	createApointment: data => new Promise((resolve, reject) => {
-		if (isMissingProps(data).length > 0) reject(new Error(`createApointment requires ${isMissingProps(data)}`));
+	createAppointment: data => new Promise((resolve, reject) => {
+		// if missing any props do not create and return error
+		if (isMissingProps(data).length > 0) reject(new Error(`createAppointment requires ${isMissingProps(data)}`));
 		else {
+			// create new appointment
 			models.Appointment.create(data).then((createdAppointment) => {
 				resolve(createdAppointment);
 			});
 		}
 	}),
 	/*
-		editApointment: edits single appointment
+		editAppointment: edits single appointment
 		------------
 		requirements:
+		- id
+		- data (appointment fields)
 		outputs:
+		- true
 	*/
-	editApointment: data => new Promise((resolve, reject) => {
-		if (data) resolve(data);
-		else reject(new Error('editApointment requires data'));
+	editAppointment: (id, data) => new Promise((resolve, reject) => {
+		if (id && data) {
+			// if id and data then update appointment based on id
+			models.Appointment.update(data, {
+				where: {
+					AppointmentID: id
+				}
+			}).then(() => {
+				resolve(true);
+			}).catch((err) => {
+				reject(err);
+			});
+		} else reject(new Error('editAppointment requires id and data'));
 	}),
 	/*
-		deleteApointment: deletes single appointment
+		deleteAppointment: deletes single appointment
 		------------
 		requirements:
 		outputs:
 	*/
-	deleteApointment: data => new Promise((resolve, reject) => {
+	deleteAppointment: data => new Promise((resolve, reject) => {
 		if (data) resolve(data);
-		else reject(new Error('deleteApointment requires data'));
+		else reject(new Error('deleteAppointment requires data'));
 	}),
 	/*
 		getAppointments: gets appointments based on fliter or no filter

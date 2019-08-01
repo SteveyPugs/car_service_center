@@ -99,5 +99,21 @@ app.post('/appointment', [
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
-	return modules.Appointment.createApointment(req.body).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+	return modules.Appointment.createAppointment(req.body).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+});
+
+/*
+api to update appointments
+required:
+- AppointmentID
+- UserFullName
+returns:
+- update status
+*/
+app.put('/appointment/:AppointmentID', (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Appointment.editAppointment(req.params.AppointmentID, req.body).then(updatedStatus => res.status(200).send(updatedStatus)).catch(err => res.status(500).send(err));
 });

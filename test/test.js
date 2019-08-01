@@ -51,9 +51,9 @@ describe('Car Service Testing Suite', () => {
 		});
 	});
 	describe('Appointments', () => {
-		describe('#createApointment()', () => {
+		describe('#createAppointment()', () => {
 			it('should create a new appointment', (done) => {
-				modules.Appointment.createApointment({
+				modules.Appointment.createAppointment({
 					AppointmentFullName: 'Stephen Pugliese',
 					AppointmentDate: new Date(),
 					AppointmentCompleted: false,
@@ -68,7 +68,26 @@ describe('Car Service Testing Suite', () => {
 				}).catch(err => done(err));
 			});
 		});
-		describe('#editApointment()', () => {
+		describe('#editAppointment()', () => {
+			it('should create a new appointment and update some details', (done) => {
+				modules.Appointment.createAppointment({
+					AppointmentFullName: 'Stephen Pugliese',
+					AppointmentDate: new Date(),
+					AppointmentCompleted: false,
+					ReasonID: 1,
+					AppointmentCarMake: 'Chevrolet',
+					AppointmentCarModel: 'Traverse',
+					AppointmentCarYear: 2018,
+					AppointmentNotes: 'Car is a lease'
+				}).then((createdApointment) => {
+					modules.Appointment.editAppointment(createdApointment.dataValues.AppointmentID, {
+						AppointmentCompleted: true
+					}).then((edtiStatus) => {
+						assert.equal(edtiStatus, true);
+						return done();
+					}).catch(err => done(err));
+				}).catch(err => done(err));
+			});
 		});
 		describe('#deleteApointment()', () => {
 		});
