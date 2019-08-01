@@ -31,7 +31,7 @@ app.post('/user', [
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
-	return modules.createUser(req.body.UserEmail, req.body.UserFullName).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+	return modules.User.createUser(req.body.UserEmail, req.body.UserFullName).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
 });
 
 /*
@@ -49,7 +49,7 @@ app.put('/user/:UserID', [
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
-	return modules.updateUser(req.params.UserID, req.body.UserFullName).then(updatedStatus => res.status(200).send(updatedStatus)).catch(err => res.status(500).send(err));
+	return modules.User.updateUser(req.params.UserID, req.body.UserFullName).then(updatedStatus => res.status(200).send(updatedStatus)).catch(err => res.status(500).send(err));
 });
 
 /*
@@ -68,5 +68,5 @@ app.post('/user/login', [
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
-	return modules.verifyUser(req.body.UserEmail, req.body.UserPassword).then(valid => res.status(200).send(valid)).catch(err => res.status(500).send(err));
+	return modules.User.verifyUser(req.body.UserEmail, req.body.UserPassword).then(valid => res.status(200).send(valid)).catch(err => res.status(500).send(err));
 });
