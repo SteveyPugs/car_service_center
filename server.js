@@ -161,3 +161,16 @@ app.get('/appointments', (req, res) => {
 		where: req.query
 	}).then(appointments => res.status(200).send(appointments)).catch(err => res.status(500).send(err));
 });
+
+/*
+api to get reasons
+required: none
+returns: Reasons array
+*/
+app.get('/reasons', (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Reason.getReasons().then(reasons => res.status(200).send(reasons)).catch(err => res.status(500).send(err));
+});

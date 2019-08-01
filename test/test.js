@@ -147,4 +147,14 @@ describe('Car Service Testing Suite', () => {
 			});
 		});
 	});
+	describe('Reasons', () => {
+		describe('#getReasons()', () => {
+			it('should get all reasons', (done) => {
+				modules.Reason.getReasons().then((reasons) => {
+					assert.equal(reasons.length > 0, true);
+					return done();
+				}).catch(err => done(err));
+			});
+		});
+	});
 });

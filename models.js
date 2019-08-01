@@ -170,42 +170,77 @@ module.exports = {
 		sequelize.sync({
 			force: false
 		}).then(() => {
-			Reason.bulkCreate([{ ReasonText: 'Replacing an oxygen sensor', ReasonPrice: 249 },
-				{ ReasonText: 'Replacing a catalytic converter', ReasonPrice: 1153 },
-				{ ReasonText: 'Replacing ignition coil(s) and spark plug(s)', ReasonPrice: 390 },
-				{ ReasonText: 'Tightening or replacing a fuel cap', ReasonPrice: 15 },
-				{ ReasonText: 'Thermostat replacement', ReasonPrice: 210 },
-				{ ReasonText: 'Replacing ignition coil(s)', ReasonPrice: 236 },
-				{ ReasonText: 'Mass air flow sensor replacement', ReasonPrice: 382 }]).then(() => {
-				if (db.dbUsername !== 'travis') {
-					User.findOne({
-						where: {
-							UserEmail: 'stephen.pugliese@outlook.com',
-							UserDeleted: false
-						}
-					}).then((user) => {
-						if (!user) {
-							const randomStr = chance.word({
-								length: 8
-							});
-							bcrypt.genSalt(10, (err, salt) => {
-								if (err) console.error(err);
-								else console.log(`Password for stephen.pugliese@outlook.com is :${randomStr}`);
-								bcrypt.hash(randomStr, salt, (_err, hash) => {
-									User.create({
-										UserEmail: 'stephen.pugliese@outlook.com',
-										UserPassword: hash,
-										UserFullName: 'Stephen Pugliese',
-										UserSalt: salt
-									}).then(() => {
-										console.log('tables synced + first user created');
+			Reason.count().then((c) => {
+				if (c < 1) {
+					Reason.bulkCreate([{ ReasonText: 'Replacing an oxygen sensor', ReasonPrice: 249 },
+					{ ReasonText: 'Replacing a catalytic converter', ReasonPrice: 1153 },
+					{ ReasonText: 'Replacing ignition coil(s) and spark plug(s)', ReasonPrice: 390 },
+					{ ReasonText: 'Tightening or replacing a fuel cap', ReasonPrice: 15 },
+					{ ReasonText: 'Thermostat replacement', ReasonPrice: 210 },
+					{ ReasonText: 'Replacing ignition coil(s)', ReasonPrice: 236 },
+					{ ReasonText: 'Mass air flow sensor replacement', ReasonPrice: 382 }]).then(() => {
+						if (db.dbUsername !== 'travis') {
+							User.findOne({
+								where: {
+									UserEmail: 'stephen.pugliese@outlook.com',
+									UserDeleted: false
+								}
+							}).then((user) => {
+								if (!user) {
+									const randomStr = chance.word({
+										length: 8
 									});
-								});
+									bcrypt.genSalt(10, (err, salt) => {
+										if (err) console.error(err);
+										else console.log(`Password for stephen.pugliese@outlook.com is :${randomStr}`);
+										bcrypt.hash(randomStr, salt, (_err, hash) => {
+											User.create({
+												UserEmail: 'stephen.pugliese@outlook.com',
+												UserPassword: hash,
+												UserFullName: 'Stephen Pugliese',
+												UserSalt: salt
+											}).then(() => {
+												console.log('tables synced + first user created');
+											});
+										});
+									});
+								} else {
+									console.log('tables synced');
+								}
 							});
-						} else {
-							console.log('tables synced');
 						}
 					});
+				} else {
+					if (db.dbUsername !== 'travis') {
+						User.findOne({
+							where: {
+								UserEmail: 'stephen.pugliese@outlook.com',
+								UserDeleted: false
+							}
+						}).then((user) => {
+							if (!user) {
+								const randomStr = chance.word({
+									length: 8
+								});
+								bcrypt.genSalt(10, (err, salt) => {
+									if (err) console.error(err);
+									else console.log(`Password for stephen.pugliese@outlook.com is :${randomStr}`);
+									bcrypt.hash(randomStr, salt, (_err, hash) => {
+										User.create({
+											UserEmail: 'stephen.pugliese@outlook.com',
+											UserPassword: hash,
+											UserFullName: 'Stephen Pugliese',
+											UserSalt: salt
+										}).then(() => {
+											console.log('tables synced + first user created');
+										});
+									});
+								});
+							} else {
+								console.log('tables synced');
+							}
+						});
+					}
 				}
 			});
 		});
