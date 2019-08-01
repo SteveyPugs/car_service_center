@@ -111,10 +111,6 @@ const Appointment = sequelize.define('Appointment', {
 		allowNull: false,
 		defaultValue: Sequelize.NOW
 	},
-	AppointmentReason: {
-		type: Sequelize.INTEGER,
-		allowNull: false
-	},
 	AppointmentCarMake: {
 		type: Sequelize.STRING,
 		allowNull: false
@@ -136,14 +132,40 @@ const Appointment = sequelize.define('Appointment', {
 	paranoid: false
 });
 
+const Reason = sequelize.define('Reason', {
+	ReasonID: {
+		type: Sequelize.INTEGER,
+		primaryKey: true,
+		autoIncrement: true
+	},
+	ReasonText: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	ReasonPrice: {
+		type: Sequelize.FLOAT,
+		allowNull: false
+	}
+}, {
+	timestamps: false,
+	paranoid: false
+});
+
 User.hasMany(PasswordReset, {
-	foreignKey: 'UserID'
+	foreignKey: 'UserID',
+	allowNull: false
+});
+
+Reason.hasMany(Appointment, {
+	foreignKey: 'ReasonID',
+	allowNull: false
 });
 
 module.exports = {
 	User,
 	PasswordReset,
 	Appointment,
+	Reason,
 	createDB() {
 		sequelize.sync({
 			force: false
@@ -168,6 +190,14 @@ module.exports = {
 									UserPassword: hash,
 									UserFullName: 'Stephen Pugliese',
 									UserSalt: salt
+								}).then(() => {
+									Reason.bulkCreate([{ ReasonText: 'Replacing an oxygen sensor', ReasonPrice: 249 },
+										{ ReasonText: 'Replacing a catalytic converter', ReasonPrice: 1153 },
+										{ ReasonText: 'Replacing ignition coil(s) and spark plug(s)', ReasonPrice: 390 },
+										{ ReasonText: 'Tightening or replacing a fuel cap', ReasonPrice: 15 },
+										{ ReasonText: 'Thermostat replacement', ReasonPrice: 210 },
+										{ ReasonText: 'Replacing ignition coil(s)', ReasonPrice: 236 },
+										{ ReasonText: 'Mass air flow sensor replacement', ReasonPrice: 382 }]);
 								});
 								console.log('tables synced + first user created');
 							});

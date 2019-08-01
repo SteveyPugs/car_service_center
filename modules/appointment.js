@@ -1,15 +1,35 @@
-// const models = require('../models');
+const models = require('../models');
+
+const props = ['AppointmentFullName', 'AppointmentDate', 'AppointmentCompleted', 'ReasonID', 'AppointmentCarMake', 'AppointmentCarModel', 'AppointmentCarYear', 'AppointmentNotes'];
+
+const isMissingProps = (data) => {
+	if (data) return props.filter(prop => !Object.prototype.hasOwnProperty.call(data, prop));
+	return props;
+};
 
 module.exports = {
 	/*
 		createApointment: creates new appointments
 		------------
 		requirements:
+		- AppointmentFullName
+		- AppointmentDate
+		- AppointmentCompleted
+		- ReasonID
+		- AppointmentCarMake
+		- AppointmentCarModel
+		- AppointmentCarYear
+		- AppointmentNotes
 		outputs:
+		- appointment created
 	*/
 	createApointment: data => new Promise((resolve, reject) => {
-		if (data) resolve(data);
-		else reject(new Error('createApointment requires data'));
+		if (isMissingProps(data).length > 0) reject(new Error(`createApointment requires ${isMissingProps(data)}`));
+		else {
+			models.Appointment.create(data).then((createdAppointment) => {
+				resolve(createdAppointment);
+			});
+		}
 	}),
 	/*
 		editApointment: edits single appointment

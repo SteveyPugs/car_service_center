@@ -70,3 +70,34 @@ app.post('/user/login', [
 	}
 	return modules.User.verifyUser(req.body.UserEmail, req.body.UserPassword).then(valid => res.status(200).send(valid)).catch(err => res.status(500).send(err));
 });
+
+/*
+api to create new appointments
+required:
+- AppointmentFullName
+- AppointmentDate
+- AppointmentCompleted
+- ReasonID
+- AppointmentCarMake
+- AppointmentCarModel
+- AppointmentCarYear
+- AppointmentNotes
+returns:
+- new appointment
+*/
+app.post('/appointment', [
+	check('AppointmentFullName').isLength({ min: 1 }),
+	check('AppointmentDate').isLength({ min: 1 }),
+	check('AppointmentCompleted').isLength({ min: 1 }),
+	check('ReasonID').isLength({ min: 1 }),
+	check('AppointmentCarMake').isLength({ min: 1 }),
+	check('AppointmentCarModel').isLength({ min: 1 }),
+	check('AppointmentCarYear').isLength({ min: 1 }),
+	check('AppointmentNotes').isLength({ min: 1 })
+], (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Appointment.createApointment(req.body).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+});

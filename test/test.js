@@ -52,6 +52,21 @@ describe('Car Service Testing Suite', () => {
 	});
 	describe('Appointments', () => {
 		describe('#createApointment()', () => {
+			it('should create a new appointment', (done) => {
+				modules.Appointment.createApointment({
+					AppointmentFullName: 'Stephen Pugliese',
+					AppointmentDate: new Date(),
+					AppointmentCompleted: false,
+					ReasonID: 1,
+					AppointmentCarMake: 'Chevrolet',
+					AppointmentCarModel: 'Traverse',
+					AppointmentCarYear: 2018,
+					AppointmentNotes: 'Car is a lease'
+				}).then((createdApointment) => {
+					assert.notEqual(createdApointment, null);
+					return done();
+				}).catch(err => done(err));
+			});
 		});
 		describe('#editApointment()', () => {
 		});
