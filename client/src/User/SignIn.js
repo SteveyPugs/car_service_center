@@ -15,13 +15,13 @@ var SignIn = (props) => {
                             <form>
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input type="email" className="form-control" id="UserEmail" placeholder="john.doe@example.com" />
+                                    <input type="email" className="form-control form-control-sm" id="UserEmail" placeholder="john.doe@example.com" />
                                 </div>
                                 <div className="form-group">
                                     <label>Password</label>
-                                    <input type="password" className="form-control" id="UserPassword" />
+                                    <input type="password" className="form-control form-control-sm" id="UserPassword" />
                                 </div>
-                                <button type="submit" className="btn btn-primary btn-sm btn-block">Sign In</button>
+                                <button type="submit" className="btn btn-primary btn-sm btn-block" onClick={props.loginUser}>Sign In</button>
                                 <hr />
                                 <Link to="/forgot" className="btn btn-info btn-sm btn-block">
                                     Forgot Password

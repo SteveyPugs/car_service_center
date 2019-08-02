@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Cookies from 'universal-cookie';
 import './App.css';
 import SignIn from './User/SignIn';
 import Forgot from './User/Forgot/Forgot';
@@ -8,22 +9,26 @@ import AppointmentSearch from './Appointment/Search';
 import AppointmentNew from './Appointment/New/New';
 import AppointmentEdit from './Appointment/Edit/Edit';
 import NoMatch from './NoMatch/NoMatch';
+const cookies = new Cookies();
 
 class App extends Component {
-    state = {
-        authenticated: false
+    loginUser = () => {
+        let randomSeq =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        cookies.set('fe_cookie', randomSeq, {
+            path: '/'
+        });
     }
     render() {
         return (
             <div className="container">
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/" exact component={SignIn} />
+                        <Route path="/" exact render={props => <SignIn loginUser = {this.loginUser} />} />
                         <Route path="/forgot" exact component={Forgot} />
                         <Route path="/forgot-step-2" exact component={ForgotConfirmation} />
-                        <PrivateRoute authenticated={this.state.authenticated} path="/appointments" exact component={AppointmentSearch} />
-                        <PrivateRoute authenticated={this.state.authenticated} path="/appointment/new" exact component={AppointmentNew} />
-                        <PrivateRoute authenticated={this.state.authenticated} path="/appointment/edit" exact component={AppointmentEdit} />
+                        <PrivateRoute path="/appointments" exact component={AppointmentSearch} />
+                        <PrivateRoute path="/appointment/new" exact component={AppointmentNew} />
+                        <PrivateRoute path="/appointment/edit" exact component={AppointmentEdit} />
                         <Route component={NoMatch} />
                     </Switch>
                 </BrowserRouter>
@@ -32,11 +37,11 @@ class App extends Component {
     }
 }
 
-function PrivateRoute ({component: Component, authenticated, ...rest}) {
+function PrivateRoute ({component: Component, ...rest}) {
     return (
         <Route
             {...rest}
-            render={(props) => authenticated ? <Component {...props} /> : <Redirect to={{
+            render={(props) => cookies.get('fe_cookie') ? <Component {...props} /> : <Redirect to={{
                 pathname: '/',
                 state: {
                     from: props.location
