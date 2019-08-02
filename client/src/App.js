@@ -12,18 +12,39 @@ import NoMatch from './NoMatch/NoMatch';
 const cookies = new Cookies();
 
 class App extends Component {
-    loginUser = () => {
+    constructor(props, context) {
+        super(props, context);
+        this.handleLogin = this.handleLogin.bind(this);
+    }
+    handleLogin = (event) => {
+        event.preventDefault();
         let randomSeq =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        cookies.set('fe_cookie', randomSeq, {
-            path: '/'
-        });
+        if(event.target.checkValidity()){
+            fetch('/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    UserEmail: event.target.UserEmail.value,
+                    UserPassword: event.target.UserPassword.value
+                })
+            }).then((resp) => resp.json()).then(response => {
+                if(response){
+                    cookies.set('fe_cookie', randomSeq, {
+                        path: '/'
+                    });
+                    window.location = '/appointments'  
+                }
+            })
+        }
     }
     render() {
         return (
             <div className="container">
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/" exact render={props => <SignIn loginUser = {this.loginUser} />} />
+                        <Route path="/" exact render={(props) => <SignIn {...props} handleLogin={this.handleLogin} />} />
                         <Route path="/forgot" exact component={Forgot} />
                         <Route path="/forgot-step-2" exact component={ForgotConfirmation} />
                         <PrivateRoute path="/appointments" exact component={AppointmentSearch} />
