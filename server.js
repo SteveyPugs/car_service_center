@@ -174,3 +174,35 @@ app.get('/reasons', (req, res) => {
 	}
 	return modules.Reason.getReasons().then(reasons => res.status(200).send(reasons)).catch(err => res.status(500).send(err));
 });
+
+/*
+api to create password reset hash
+required:
+- UserID
+returns:
+- true
+*/
+app.post('/password', [
+	check('UserID').isLength({ min: 1 })
+], (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Password.createPasswordReset(req.body.UserID).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+});
+
+/*
+api to update password reset hash
+required:
+- PasswordResetHash
+returns:
+- true
+*/
+app.put('/password/:PasswordResetHash', (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
+	return modules.Password.updatePasswordReset(req.params.PasswordResetHash).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+});

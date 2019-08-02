@@ -157,4 +157,24 @@ describe('Car Service Testing Suite', () => {
 			});
 		});
 	});
+	describe('Password', () => {
+		describe('#createPasswordReset()', () => {
+			it('should create password reset hash', (done) => {
+				modules.Password.createPasswordReset(1).then((hash) => {
+					assert.notEqual(hash, null);
+					return done();
+				}).catch(err => done(err));
+			});
+		});
+		describe('#updatePasswordReset()', () => {
+			it('should create password reset hash and update it to used', (done) => {
+				modules.Password.createPasswordReset(1).then((hash) => {
+					modules.Password.updatePasswordReset(hash).then((updated) => {
+						assert.equal(updated, true);
+						return done();
+					}).catch(err => done(err));
+				}).catch(err => done(err));
+			});
+		});
+	});
 });
