@@ -87,8 +87,19 @@ module.exports = {
 		outputs: array of appointments
 	*/
 	getAppointments: query => new Promise((resolve, reject) => {
-		models.Appointment.findAll(query).then((appointment) => {
-			resolve(appointment);
+		models.Appointment.findAll(query).then((appointments) => {
+			models.Reason.findAll().then((reasons) => {
+				appointments.forEach((appointment) => {
+					const reason = reasons.find(r => r.ReasonID === appointment.ReasonID);
+					// eslint-disable-next-line no-param-reassign
+					appointment.dataValues.ReasonText = reason.ReasonText;
+					// eslint-disable-next-line no-param-reassign
+					appointment.dataValues.ReasonPrice = reason.ReasonPrice;
+				});
+				resolve(appointments);
+			}).catch((err) => {
+				reject(err);
+			});
 		}).catch((err) => {
 			reject(err);
 		});

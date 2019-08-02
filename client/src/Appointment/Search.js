@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../NavBar/Navbar';
-import SearchBox from '../Appointment/SearchBox';
 import SearchResuls from '../Appointment/SearchResult';
 import Single from '../Appointment/Single';
 
@@ -12,8 +11,6 @@ var Search = (props) => {
             <br />
             <div className="row">
                 <div className="col-6">
-                    <SearchBox></SearchBox>
-                    <br />
                     <SearchResuls></SearchResuls>
                 </div>
                 <div className="col-6">
