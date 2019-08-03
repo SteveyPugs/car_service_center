@@ -8,7 +8,8 @@ const chance = new Chance();
 const sequelize = new Sequelize(db.dbName, db.dbUsername, db.dbPassword, {
 	host: db.dbHost,
 	dialect: 'mysql',
-	logging: false
+	logging: false,
+	timezone: '-04:00'
 });
 
 sequelize.authenticate().then().catch((err) => {

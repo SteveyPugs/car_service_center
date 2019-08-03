@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 const express = require('express');
+const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 
@@ -8,6 +9,7 @@ const port = process.env.PORT || 5000;
 const models = require('./models');
 const modules = require('./modules');
 
+const { Op } = Sequelize;
 app.use(bodyParser.json());
 
 app.listen(port, () => {
@@ -157,8 +159,23 @@ app.get('/appointments', (req, res) => {
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
+	const query = {};
+	if (req.query.AppointmentDateFrom && req.query.AppointmentDateTo) {
+		query.AppointmentDate = {
+			[Op.lte]: req.query.AppointmentDateTo,
+			[Op.gte]: req.query.AppointmentDateFrom
+		};
+	} else if (req.query.AppointmentDateFrom) {
+		query.AppointmentDate = {
+			[Op.gte]: req.query.AppointmentDateFrom
+		};
+	} else if (req.query.AppointmentDateTo) {
+		query.AppointmentDate = {
+			[Op.lte]: req.query.AppointmentDateTo
+		};
+	}
 	return modules.Appointment.getAppointments({
-		where: req.query
+		where: query
 	}).then(appointments => res.status(200).send(appointments)).catch(err => res.status(500).send(err));
 });
 
