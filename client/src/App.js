@@ -16,6 +16,9 @@ class App extends Component {
         super(props, context);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleNewAppointment = this.handleNewAppointment.bind(this);
+        this.state = {
+            chosenRecord: null
+        }
     }
     handleLogin = (event) => {
         event.preventDefault();
@@ -65,6 +68,12 @@ class App extends Component {
             })
         }
     }
+    handleSingleChoice = (id) => {
+        console.log(id)
+        this.setState({
+            chosenRecord: id
+        })
+    }
     render() {
         return (
             <div className="container">
@@ -73,7 +82,7 @@ class App extends Component {
                         <Route path="/" exact render={(props) => <SignIn {...props} handleLogin={this.handleLogin} />} />
                         <Route path="/forgot" exact component={Forgot} />
                         <Route path="/forgot-step-2" exact component={ForgotConfirmation} />
-                        <PrivateRoute path="/appointments" exact component={AppointmentSearch} />
+                        <PrivateRoute path="/appointments" exact component={AppointmentSearch} handler={this.handleSingleChoice} handlerView={this.state.chosenRecord} />
                         <PrivateRoute path="/appointment/new" exact component={AppointmentNew} handler={this.handleNewAppointment} />
                         <PrivateRoute path="/appointment/edit" exact component={AppointmentEdit} />
                         <Route component={NoMatch} />
@@ -84,11 +93,11 @@ class App extends Component {
     }
 }
 
-function PrivateRoute ({component: Component, handler, ...rest}) {
+function PrivateRoute ({component: Component, handler, handlerView, ...rest}) {
     return (
         <Route
             {...rest}
-            render={(props) => cookies.get('fe_cookie') ? <Component {...props} handler={handler}
+            render={(props) => cookies.get('fe_cookie') ? <Component {...props} handler={handler} handlerView={handlerView}
             /> : <Redirect to={{
                 pathname: '/',
                 state: {

@@ -52,13 +52,13 @@ class SearchResult extends Component {
     }
     generateList = () => {
         if(this.state.appointments.length > 0){
-            return orderBy(this.state.appointments, ['ReasonPrice'], [this.state.priceOrder]).map((value, index) => {               
+            return orderBy(this.state.appointments, ['ReasonPrice'], [this.state.priceOrder]).map((value, index) => {   
+                let key = value.AppointmentID;
                 return (
-                    <a key={value.AppointmentID} href="#" className="list-group-item list-group-item-action">
+                    <a key={key} href="#" onClick={() => this.props.handleSingleChoice(key)} className="list-group-item list-group-item-action">
                         <div className="d-flex w-100 justify-content-between">
                             <h5 className="mb-1">{value.AppointmentFullName}</h5>
-                            <small>
-                            {moment(value.AppointmentDate).format('YYYY-MM-DD')}</small>
+                            <small>{moment(value.AppointmentDate).format('YYYY-MM-DD')}</small>
                         </div>                            
                         <small>{value.ReasonText} (${value.ReasonPrice})</small>
                     </a>

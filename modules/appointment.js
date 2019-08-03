@@ -120,7 +120,16 @@ module.exports = {
 					AppointmentID: id
 				}
 			}).then((appointment) => {
-				resolve(appointment);
+				models.Reason.findAll().then((reasons) => {
+					const reason = reasons.find(r => r.ReasonID === appointment.ReasonID);
+					// eslint-disable-next-line no-param-reassign
+					appointment.dataValues.ReasonText = reason.ReasonText;
+					// eslint-disable-next-line no-param-reassign
+					appointment.dataValues.ReasonPrice = reason.ReasonPrice;
+					resolve(appointment);
+				}).catch((err) => {
+					reject(err);
+				});
 			}).catch((err) => {
 				reject(err);
 			});
