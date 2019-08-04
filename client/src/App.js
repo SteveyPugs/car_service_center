@@ -68,6 +68,31 @@ class App extends Component {
             })
         }
     }
+    handleEditAppointment = (event) => {
+        event.preventDefault();
+        if(event.target.checkValidity()){
+            fetch('/appointment/' + event.target.AppointmentID.value, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    AppointmentFullName: event.target.AppointmentFullName.value,
+                    AppointmentDate: event.target.AppointmentDate.value,
+                    AppointmentCompleted: event.target.AppointmentCompleted.value,
+                    AppointmentCarMake: event.target.AppointmentCarMake.value,
+                    AppointmentCarModel: event.target.AppointmentCarModel.value,
+                    AppointmentCarYear: event.target.AppointmentCarYear.value,
+                    AppointmentNotes: event.target.AppointmentNotes.value,
+                    ReasonID: event.target.ReasonID.value,
+                })
+            }).then((resp) => resp.json()).then(response => {
+                if(response){
+                    //window.location = '/appointments'  
+                }
+            })
+        }
+    }
     handleSingleChoice = (id) => {
         console.log(id)
         this.setState({
@@ -84,7 +109,7 @@ class App extends Component {
                         <Route path="/forgot-step-2" exact component={ForgotConfirmation} />
                         <PrivateRoute path="/appointments" exact component={AppointmentSearch} handler={this.handleSingleChoice} handlerView={this.state.chosenRecord} />
                         <PrivateRoute path="/appointment/new" exact component={AppointmentNew} handler={this.handleNewAppointment} />
-                        <PrivateRoute path="/appointment/edit" exact component={AppointmentEdit} />
+                        <PrivateRoute path="/appointment/edit/:id" exact component={AppointmentEdit} handler={this.handleEditAppointment} />
                         <Route component={NoMatch} />
                     </Switch>
                 </BrowserRouter>

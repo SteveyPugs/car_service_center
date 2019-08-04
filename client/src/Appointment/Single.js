@@ -19,8 +19,7 @@ class Single extends Component {
         })
     }
     componentDidUpdate(){
-
-        if(this.state.appointment && (this.state.appointment.AppointmentID != this.props.handlerView)){
+        if(this.state.appointment && (this.state.appointment.AppointmentID !== this.props.handlerView)){
             fetch('/appointment/' + this.props.handlerView, {
                 method: 'GET'
             }).then((resp) => resp.json()).then(response => {
@@ -82,7 +81,7 @@ class Single extends Component {
                     <br />
                     <div className="row">
                         <div className="col">
-                            <Link to="/appointment/edit" className="btn btn-dark btn-sm">Edit</Link>
+                            <Link to={`/appointment/edit/${this.state.appointment.AppointmentID}`} className="btn btn-dark btn-sm">Edit</Link>
                         </div>
                         <div className="col text-right">
                             <button type="button" className="btn btn-dark btn-sm" data-toggle="modal" data-target="#deleteAppointmentModal">Remove</button>
