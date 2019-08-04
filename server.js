@@ -201,13 +201,13 @@ returns:
 - true
 */
 app.post('/password', [
-	check('UserID').isLength({ min: 1 })
+	check('UserEmail').isEmail()
 ], (req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
-	return modules.Password.createPasswordReset(req.body.UserID).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+	return modules.Password.createPasswordReset(req.body.UserEmail).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
 });
 
 /*

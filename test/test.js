@@ -160,7 +160,7 @@ describe('Car Service Testing Suite', () => {
 	describe('Password', () => {
 		describe('#createPasswordReset()', () => {
 			it('should create password reset hash', (done) => {
-				modules.Password.createPasswordReset(1).then((hash) => {
+				modules.Password.createPasswordReset('test@test.com').then((hash) => {
 					assert.notEqual(hash, null);
 					return done();
 				}).catch(err => done(err));
@@ -168,7 +168,7 @@ describe('Car Service Testing Suite', () => {
 		});
 		describe('#updatePasswordReset()', () => {
 			it('should create password reset hash and update it to used', (done) => {
-				modules.Password.createPasswordReset(1).then((hash) => {
+				modules.Password.createPasswordReset('test@test.com').then((hash) => {
 					modules.Password.updatePasswordReset(hash).then((updated) => {
 						assert.equal(updated, true);
 						return done();

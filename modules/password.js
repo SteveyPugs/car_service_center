@@ -1,5 +1,10 @@
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
+const Chance = require('chance');
+
 const models = require('../models');
+
+const chance = new Chance();
 
 module.exports = {
 	/*
@@ -10,20 +15,34 @@ module.exports = {
         outputs:
         - hash
 	*/
-	createPasswordReset: id => new Promise((resolve, reject) => {
-		if (id) {
-			const currentDate = (new Date()).valueOf().toString();
-			const random = Math.random().toString();
-			const hash = crypto.createHash('sha1').update(currentDate + random).digest('hex');
-			models.PasswordReset.create({
-				UserID: id,
-				PasswordResetHash: hash
-			}).then(() => {
-				resolve(hash);
+	createPasswordReset: email => new Promise((resolve, reject) => {
+		if (email) {
+			models.User.findOne({
+				where: {
+					UserEmail: email,
+					UserDeleted: false
+				},
+				raw: true
+			}).then((user) => {
+				if (user) {
+					const currentDate = (new Date()).valueOf().toString();
+					const random = Math.random().toString();
+					const hash = crypto.createHash('sha1').update(currentDate + random).digest('hex');
+					models.PasswordReset.create({
+						UserID: user.UserID,
+						PasswordResetHash: hash
+					}).then(() => {
+						resolve(hash);
+					}).catch((err) => {
+						reject(err);
+					});
+				} else {
+					resolve();
+				}
 			}).catch((err) => {
 				reject(err);
 			});
-		} else reject(new Error('createPasswordReset requires id'));
+		} else reject(new Error('createPasswordReset requires email'));
 	}),
 	/*
 		updatePasswordReset: update password reset
@@ -35,14 +54,50 @@ module.exports = {
 	*/
 	updatePasswordReset: hash => new Promise((resolve, reject) => {
 		if (hash) {
-			models.PasswordReset.update({
-				PasswordResetUsed: true
-			}, {
+			models.PasswordReset.findOne({
 				where: {
-					PasswordResetHash: hash
+					PasswordResetHash: hash,
+					PasswordResetUsed: false
 				}
-			}).then(() => {
-				resolve(true);
+			}).then((passwordreset) => {
+				if (passwordreset) {
+					models.PasswordReset.update({
+						PasswordResetUsed: true
+					}, {
+						where: {
+							PasswordResetHash: hash
+						}
+					}).then(() => {
+						// generate random password
+						const randomStr = chance.word({
+							length: 8
+						});
+						console.log(`Password has been reset using :${randomStr}`);
+						// generate salt
+						bcrypt.genSalt(10, (err, salt) => {
+							if (err) reject(err);
+							// generate hash on random password + salt
+							bcrypt.hash(randomStr, salt, (err2, newHash) => {
+								// add user to the db
+								if (err2) reject(err2);
+								models.User.update({
+									UserPassword: newHash,
+									UserSalt: salt
+								}, {
+									where: {
+										UserID: passwordreset.UserID
+									}
+								}).then(() => {
+									resolve(true);
+								});
+							});
+						});
+					}).catch((err) => {
+						reject(err);
+					});
+				} else {
+					resolve(true);
+				}
 			}).catch((err) => {
 				reject(err);
 			});

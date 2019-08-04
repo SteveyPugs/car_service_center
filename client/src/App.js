@@ -105,7 +105,7 @@ class App extends Component {
                     <Switch>
                         <Route path="/" exact render={(props) => <SignIn {...props} handleLogin={this.handleLogin} />} />
                         <Route path="/forgot" exact component={Forgot} />
-                        <Route path="/forgot-step-2" exact component={ForgotConfirmation} />
+                        <Route path="/forgot-step-2/:hash" exact component={ForgotConfirmation} />
                         <PrivateRoute path="/appointments" exact component={AppointmentSearch} handler={this.handleSingleChoice} handlerView={this.state.chosenRecord} />
                         <PrivateRoute path="/appointment/new" exact component={AppointmentNew} handler={this.handleNewAppointment} />
                         <PrivateRoute path="/appointment/edit/:id" exact component={AppointmentEdit} handler={this.handleEditAppointment} />
