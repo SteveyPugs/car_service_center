@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
-var Navbar = (props) => {
+const cookies = new Cookies();
+
+const handleLogout = () => {
+    cookies.remove('fe_cookie');
+    window.location = '/'  
+}
+
+const Navbar = (props) => {
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <a className="navbar-brand" href="/appointments">Appointment Book</a>
@@ -15,9 +23,7 @@ var Navbar = (props) => {
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto align-items-center">
-                    <li className="nav-item">
-                        <Link to="/" className="nav-link">Sign Out</Link>
-                    </li>
+                    <li className="nav-item" onClick={handleLogout}>Sign Out</li>
                 </ul>
             </div>
         </nav>
