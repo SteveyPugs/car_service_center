@@ -12,7 +12,7 @@ const handleLogout = () => {
 const Navbar = (props) => {
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="/appointments">Appointment Book</a>
+            <a className="navbar-brand" href="/appts">Appointment Book</a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#appointmentNavbar" aria-controls="appointmentNavbar">
                 <span className="navbar-toggler-icon"></span>
             </button>

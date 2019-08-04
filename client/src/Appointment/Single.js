@@ -36,7 +36,7 @@ class Single extends Component {
             this.setState({
                 appointment: response
             }, function(){
-                window.location = '/appointments'
+                window.location = '/appts'
             })
         })
     }

@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 const express = require('express');
+const path = require('path');
 const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
@@ -223,4 +224,9 @@ app.put('/password/:PasswordResetHash', (req, res) => {
 		return res.status(422).json({ errors: errors.array() });
 	}
 	return modules.Password.updatePasswordReset(req.params.PasswordResetHash).then(() => res.status(200).send(true)).catch(err => res.status(500).send(err));
+});
+
+app.use(express.static('client/build'));
+app.get('*', (req, res) => {
+	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });

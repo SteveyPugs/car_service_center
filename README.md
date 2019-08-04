@@ -1,6 +1,7 @@
 # Car Service Center
 
 [![Build Status](https://travis-ci.com/SteveyPugs/car_service_center.svg?token=6QhuXtnoHM5ZuCi5iyJN&branch=master)](https://travis-ci.com/SteveyPugs/car_service_center)
+
 A project the handles building the website for a car server center.
 
 #### Preq(s)
@@ -29,3 +30,12 @@ npm test
 ```
 
 #### Production
+
+```bash
+cp server_config.example.js server_config.js 
+## update config file with database values
+cd client
+npm run build
+cd ..
+node server.js
+```
