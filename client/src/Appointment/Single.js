@@ -29,6 +29,17 @@ class Single extends Component {
             })
         }
     }
+    deleteAppointment = () => {
+        fetch('/appointment/' + this.state.appointment.AppointmentID, {
+            method: 'DELETE'
+        }).then((resp) => resp.json()).then(response => {
+            this.setState({
+                appointment: response
+            }, function(){
+                window.location = '/appointments'
+            })
+        })
+    }
     show = () => {
         if(this.state.appointment){
             return (
@@ -95,7 +106,7 @@ class Single extends Component {
                                 </div>
                                 <div className="modal-footer">
                                     <div className="col-6">
-                                        <button type="button" className="btn btn-block btn-success">Yes</button>
+                                        <button type="button" className="btn btn-block btn-success" onClick={this.deleteAppointment}>Yes</button>
                                     </div>
                                     <div className="col-6">
                                         <button type="button" className="btn btn-block btn-danger" data-dismiss="modal">No</button>
@@ -109,11 +120,9 @@ class Single extends Component {
         }
     }
     render(){
-        console.log()
         return(
             <div className="alert alert-secondary" role="alert">
                 {this.show()}
-                
             </div>
         )
     }

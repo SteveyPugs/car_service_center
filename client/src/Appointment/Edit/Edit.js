@@ -3,7 +3,6 @@ import Navbar from '../../NavBar/Navbar';
 import moment from 'moment';
 import { map, find } from "lodash";
 import carList from '../../car-list';
-import $ from 'jquery';
 
 class Edit extends Component {
     constructor(props) {

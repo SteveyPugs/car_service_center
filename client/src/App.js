@@ -88,13 +88,12 @@ class App extends Component {
                 })
             }).then((resp) => resp.json()).then(response => {
                 if(response){
-                    //window.location = '/appointments'  
+                    window.location = '/appointments'  
                 }
             })
         }
     }
     handleSingleChoice = (id) => {
-        console.log(id)
         this.setState({
             chosenRecord: id
         })

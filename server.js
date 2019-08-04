@@ -174,6 +174,7 @@ app.get('/appointments', (req, res) => {
 			[Op.lte]: req.query.AppointmentDateTo
 		};
 	}
+	query.AppointmentDeleted = false;
 	return modules.Appointment.getAppointments({
 		where: query
 	}).then(appointments => res.status(200).send(appointments)).catch(err => res.status(500).send(err));
