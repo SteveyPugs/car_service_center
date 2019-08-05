@@ -22,12 +22,18 @@ class New extends Component {
         })
     }
     makeChangeHandler = (event) => {
-        let models = find(carList, (car) => {
+        let brand = find(carList, (car) => {
             return car.brand === event.target.value;
-        }).models
-        this.setState({
-            modelList: models
         })
+        if(brand){
+            this.setState({
+                modelList: brand.models
+            })
+        } else {
+            this.setState({
+                modelList: []
+            })
+        }
     }
     render(){
         return(
@@ -38,7 +44,7 @@ class New extends Component {
                 <div className="container">
                     <h3>New</h3>
                     <hr />
-                    <form onSubmit={this.props.handler} className="needs-validation" noValidate>
+                    <form onSubmit={this.props.handler}>
                         <div className="form-row">
                             <div className="form-group col-6">
                                 <label>Full Name</label>
@@ -89,14 +95,14 @@ class New extends Component {
                             </div>
                             <div className="form-group col-4">
                                 <label>Year</label>
-                                <input type="number" required className="form-control form-control-sm" name="AppointmentCarYear" id="AppointmentCarYear" min="1900" max={(new Date().getFullYear())} defaultValue={(new Date().getFullYear())} />
+                                <input type="number" required className="form-control form-control-sm" name="AppointmentCarYear" id="AppointmentCarYear" min="1900" max={(new Date().getFullYear())}/>
                                 <div className="invalid-feedback">Enter a year</div>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="form-group col">
-                                <label>Notes <small>(optional)</small></label>
-                                <textarea name="AppointmentNotes" id="AppointmentNotes" className="form-control"></textarea>
+                                <label>Notes</label>
+                                <textarea name="AppointmentNotes" id="AppointmentNotes" required className="form-control"></textarea>
                             </div>
                         </div>
                         <button type="submit" className="btn btn-primary">Save</button>

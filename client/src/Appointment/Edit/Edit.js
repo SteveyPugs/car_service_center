@@ -32,12 +32,18 @@ class Edit extends Component {
         })
     }
     makeChangeHandler = (event) => {
-        let models = find(carList, (car) => {
+        let brand = find(carList, (car) => {
             return car.brand === (event ? event.target.value : this.state.appointment.AppointmentCarMake);
-        }).models
-        this.setState({
-            modelList: models
         })
+        if(brand){
+            this.setState({
+                modelList: brand.models
+            })
+        } else {
+            this.setState({
+                modelList: []
+            })
+        }
     }
     renderForm = () => {
         if(this.state.appointment){            
@@ -54,11 +60,11 @@ class Edit extends Component {
                             <div className="form-row">
                                 <div className="form-group col-6">
                                     <label>Full Name</label>
-                                    <input type="text" className="form-control form-control-sm" id="AppointmentFullName" defaultValue={this.state.appointment.AppointmentFullName} />
+                                    <input type="text" required className="form-control form-control-sm" id="AppointmentFullName" defaultValue={this.state.appointment.AppointmentFullName} />
                                 </div>
                                 <div className="form-group col-6">
                                     <label>Date / Time</label>
-                                    <input type="date" className="form-control form-control-sm" id="AppointmentDate" placeholder="Password" defaultValue={moment(this.state.appointment.AppointmentDate).format('YYYY-MM-DD')} />
+                                    <input type="date" required className="form-control form-control-sm" id="AppointmentDate" placeholder="Password" defaultValue={moment(this.state.appointment.AppointmentDate).format('YYYY-MM-DD')} />
                                 </div>
                             </div>
                             <div className="form-row">
@@ -107,8 +113,8 @@ class Edit extends Component {
                             </div>
                             <div className="form-row">
                                 <div className="form-group col">
-                                    <label>Notes <small>(optional)</small></label>
-                                    <textarea name="AppointmentNotes" id="AppointmentNotes" className="form-control">{this.state.appointment.AppointmentNotes}</textarea>
+                                    <label>Notes</label>
+                                    <textarea required name="AppointmentNotes" id="AppointmentNotes" className="form-control">{this.state.appointment.AppointmentNotes}</textarea>
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-primary">Save</button>

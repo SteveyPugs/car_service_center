@@ -181,7 +181,7 @@ function randomAppointments() {
 			AppointmentDate: chance.date({ string: true }),
 			AppointmentCarMake: randomMake.brand,
 			AppointmentCarModel: randomModel,
-			AppointmentCarYear: chance.year({ min: 1900, max: 2100 }),
+			AppointmentCarYear: chance.year({ min: 1900, max: 2019 }),
 			AppointmentNotes: chance.paragraph({ sentences: 4 }),
 			ReasonID: reason.ReasonID
 		}).then(() => {
