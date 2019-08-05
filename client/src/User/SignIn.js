@@ -12,7 +12,7 @@ var SignIn = (props) => {
                     <div className="card">
                         <div className="card-header text-center">Car Service Login</div>
                         <div className="card-body">
-                            <form onSubmit={props.handleLogin} className="needs-validation" noValidate>
+                            <form onSubmit={props.handleLogin}>
                                 <div className="form-group">
                                     <label>Email</label>
                                     <input type="email" name="UserEmail" id="UserEmail" className="form-control form-control-sm" placeholder="john.doe@example.com" required />

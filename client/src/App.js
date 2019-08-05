@@ -34,11 +34,13 @@ class App extends Component {
                     UserPassword: event.target.UserPassword.value
                 })
             }).then((resp) => resp.json()).then(response => {
-                if(response){
+                if(response && !response.errors){
                     cookies.set('fe_cookie', randomSeq, {
                         path: '/'
                     });
-                    window.location = '/appts'  
+                    window.location = '/appts'
+                } else {
+                    alert('The email address and password you entered is not correct')
                 }
             })
         }
