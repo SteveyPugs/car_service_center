@@ -162,6 +162,39 @@ Reason.hasMany(Appointment, {
 	allowNull: false
 });
 
+const carList = require('./client/src/car-list.json');
+
+function randomAppointments() {
+	const min = 60;
+	const max = 120;
+	const randSeconds = Math.floor(Math.random() * (max - min + 1) + min);
+	const randomMake = carList[Math.floor(Math.random() * ((carList.length - 1) - 0 + 1) + 0)];
+	const { models } = randomMake;
+	const randomModel = models[Math.floor(Math.random() * ((models.length - 1) - 0 + 1) + 0)];
+	Reason.findOne({
+		where: {
+			ReasonID: Math.floor(Math.random() * (7 - 1 + 1) + 1)
+		}
+	}).then((reason) => {
+		Appointment.create({
+			AppointmentFullName: chance.name(),
+			AppointmentDate: chance.date({ string: true }),
+			AppointmentCarMake: randomMake.brand,
+			AppointmentCarModel: randomModel,
+			AppointmentCarYear: chance.year({ min: 1900, max: 2100 }),
+			AppointmentNotes: chance.paragraph({ sentences: 4 }),
+			ReasonID: reason.ReasonID
+		}).then(() => {
+			console.log(`Wait for ${randSeconds} seconds`);
+			setTimeout(randomAppointments, randSeconds * 1000);
+		});
+	}).catch((err) => {
+		console.log(err);
+	});
+}
+
+randomAppointments();
+
 module.exports = {
 	User,
 	PasswordReset,
